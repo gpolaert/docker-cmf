@@ -1,14 +1,33 @@
-FROM centos:centos6
+FROM centos:7.1.1503
+
+# be my friend ;)
 MAINTAINER gpolaert (@gpolaert)
 
+# repos
+ADD http://archive.cloudera.com/cm5/redhat/7/x86_64/cm/cloudera-manager.repo /etc/yum.repos.d/
 
-RUN yum update -y
-ADD http://archive.cloudera.com/cm5/redhat/6/x86_64/cm/cloudera-manager.repo /etc/yum.repos.d/
+# need to used systemd instead of fakesystemd (@see http://bit.ly/1UgISI5)
+RUN yum clean all && yum swap -y fakesystemd systemd
 
+# cloudera packages
+RUN yum install -y cloudera-manager-daemons oracle-j2sdk1.7 cloudera-manager-agent
 
-RUN yum install -y cloudera-manager-daemons oracle-j2sdk1.7
-RUN yum install -y cloudera-manager-agent
+# env vars
+ENV CMF_CONF_DIR /cmf/config
+ENV JAVA_HOME /usr/java/jdk1.7.0_67-cloudera/
 
-RUN mkdir -p /cmf/{parcels,lib,log}
+# mount/volume points
+RUN mkdir -p /cmf/{config,lib,log,parcels} && \
+    ln -s /cmf/parcels /opt/cloudera/parcels 
 
-CMD cmf-agent --master $CMF_SERVER --parcel_dir /cmf/parcels --lib_dir /cmf/lib --logdir /cmf/log
+# ports used
+EXPOSE 9000
+
+# container volume 
+VOLUME ["/cmf/"]
+
+# default command
+ENTRYPOINT ["cmf-agent", "--parcel_dir", "/cmf/parcels", "--lib_dir", "/cmf/lib", "--logdir", "/cmf/log", "--logfile", "/cmf/log/cloudera-scm-agent/cloudera-scm-agent.log"]
+
+# override some args
+CMD ["--master", "localhost:7182"] 
