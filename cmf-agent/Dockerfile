@@ -4,13 +4,15 @@ FROM centos:7.1.1503
 MAINTAINER gpolaert (@gpolaert)
 
 # repos
+RUN echo 7.1.1503 > /etc/yum/vars/releasever
 ADD http://archive.cloudera.com/cm5/redhat/7/x86_64/cm/cloudera-manager.repo /etc/yum.repos.d/
 
 # need to used systemd instead of fakesystemd (@see http://bit.ly/1UgISI5)
 RUN yum clean all && yum swap -y fakesystemd systemd
 
 # cloudera packages
-RUN yum install -y cloudera-manager-daemons oracle-j2sdk1.7 cloudera-manager-agent
+RUN yum install -y cloudera-manager-daemons oracle-j2sdk1.7
+RUN yum install -y cloudera-manager-agent
 
 # env vars
 ENV CMF_CONF_DIR /cmf/config
