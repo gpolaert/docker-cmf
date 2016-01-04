@@ -1,13 +1,17 @@
+## The Cloudera Manager Agent (cmf-agent)
+[i]http://www.cloudera.com/content/dam/www/static/images/logos/cloudera-logo.png[/i]
 ### Aim
-This image is a part of the cmf images. The aim is to deploy a Hadoop cluster with the Cloudera Manager.
+This image is a part of the **docker-cmf** images. The original aim is to deploy a Hadoop cluster with the Cloudera Manager.
 In this repo, we have made the choice of running all hadoop services as sub-processes of the cloudera agent.
 
 ### Quickstart
 see @Running section to see all examples.
 
+**Info:** The agent hostname need to respect the RFC 952 in order to works the cloudera server.
+
 ```
 # Quick and dirty example
-docker run -d cmf-agent --hostname cmf-agent-$(hostname) -p 9000:9000 --master master_fqdn:7180
+docker run -dt --hostname cmf-agent-$(hostname) -p 9000:9000 cmf-agent --master master_fqdn:7180
 ```
 
 #### Design
@@ -26,8 +30,10 @@ The cmf master location is provides by `CMD`, the default value is `--master cmf
 
 Hadoop and Agent use many ports. In standalone or network/swarm mode, you can run the image without adding a port translation.
 But if you want bind the container with the host's ports, you have to add some `-p` options.
+
 **Agent ports:**
 - `-p 9000:9000`: Communication between the server and agents.
+
 **HDFS services:**
 
 ##### Volumes
@@ -38,6 +44,8 @@ There is a unique mount point `/cmf`. This path contains 3 directories:
  
 ##### Logs
 The stdout logs every events of the agent' stdout like the default behavior.
+Hadoop sub-processes log by default in `/cmf/log/<service-name>/` like the agent does without docker.
+
 
 ##### Environment vars
 - `SCM_DEBUG`: INFO (default) or DEBUG, set the Agent's log level.
