@@ -26,10 +26,10 @@ RUN mkdir -p /cmf/{config,lib,log,parcels} && \
 EXPOSE 9000
 
 # container volume 
-VOLUME ["/cmf/"]
+VOLUME ["/cmf/parcles", "/cmf/lib", "/cmf/log"]
 
 # default command
 ENTRYPOINT ["cmf-agent", "--parcel_dir", "/cmf/parcels", "--lib_dir", "/cmf/lib", "--logdir", "/cmf/log", "--logfile", "/cmf/log/cloudera-scm-agent/cloudera-scm-agent.log"]
 
 # override some args
-CMD ["--master", "localhost:7182"] 
+CMD ["--master", "cmf-master:7182"] 
