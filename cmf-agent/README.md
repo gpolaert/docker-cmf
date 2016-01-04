@@ -1,5 +1,5 @@
 ## The Cloudera Manager Agent (cmf-agent)
-[i]http://www.cloudera.com/content/dam/www/static/images/logos/cloudera-logo.png[/i]
+![Cloudera logo](http://www.cloudera.com/content/dam/www/static/images/logos/cloudera-logo.png)
 ### Aim
 This image is a part of the **docker-cmf** images. The original aim is to deploy a Hadoop cluster with the Cloudera Manager.
 In this repo, we have made the choice of running all hadoop services as sub-processes of the cloudera agent.
