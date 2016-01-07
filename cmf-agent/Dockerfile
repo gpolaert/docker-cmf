@@ -20,16 +20,16 @@ ENV JAVA_HOME /usr/java/jdk1.7.0_67-cloudera/
 
 # mount/volume points
 RUN mkdir -p /cmf/{config,lib,log,parcels} && \
-    ln -s /cmf/parcels /opt/cloudera/parcels 
+    ln -s /opt/cloudera/parcels /cmf/parcels
 
 # ports used
 EXPOSE 9000
 
 # container volume 
-VOLUME ["/cmf/parcles", "/cmf/lib", "/cmf/log"]
+VOLUME ["/opt/cloudera/parcels", "/cmf/lib", "/cmf/log"]
 
 # default command
-ENTRYPOINT ["cmf-agent", "--parcel_dir", "/cmf/parcels", "--lib_dir", "/cmf/lib", "--logdir", "/cmf/log", "--logfile", "/cmf/log/cloudera-scm-agent/cloudera-scm-agent.log"]
+ENTRYPOINT ["cmf-agent", "--lib_dir", "/cmf/lib", "--logdir", "/cmf/log", "--logfile", "/cmf/log/cloudera-scm-agent/cloudera-scm-agent.log"]
 
 # override some args
-CMD ["--master", "cmf-master:7182"] 
+CMD ["--master", "cmf-server:7182"] 
