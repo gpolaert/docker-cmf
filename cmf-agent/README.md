@@ -25,7 +25,7 @@ By default, the image run the `cmf-agent` command with some default values:
 - `lib_dir` set to `/cmf/lib`
 - `logfile` set to `/cmf/log/cloudera-scm-agent/cloudera-scm-agent.log`.
 
-The cmf master location is provides by `CMD`, the default value is `--master cmf-master:7180`.
+The cmf master location is provides by `CMD`, the default value is `--master cmf-server:7180`.
 
 ##### Ports
 
